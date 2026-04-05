@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>📊 Performance Dashboard</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+
+body{
+background-color:#121212;
+color:white;
+transition:0.3s;
+min-height:100vh;
+display:flex;
+flex-direction:column;
+}
+
+.navbar{
+background:#1f1f1f;
+height:60px;
+display:flex;
+align-items:center;
+}
+
+.navbar-container{
+display:flex;
+justify-content:space-between;
+align-items:center;
+width:100%;
+max-width:1100px;
+margin:0 auto;
+}
+
+.nav-links{
+display:flex;
+align-items:center;
+gap:20px;
+}
+
+.nav-links a{
+color:white;
+text-decoration:none;
+font-weight:500;
+}
+
+.light-mode .navbar{
+background:#e9e9e9;
+}
+
+.light-mode .nav-links a{
+color:black;
+}
+
+.footer{
+text-align:center;
+padding:25px;
+font-size:14px;
+opacity:0.7;
+margin-top:auto;
+}
+
+.light-mode{
+background-color:white;
+color:black;
+}
+
+.light-mode .navbar{
+background:#e9e9e9;
+}
+
+.light-mode .nav-links a{
+color:black;
+}
+
+.light-mode .chart-container{
+background:#f3f3f3;
+}
+
+.stat-card{
+background:#1e1e1e;
+border-radius:12px;
+padding:20px;
+text-align:center;
+transition:all 0.25s ease;
+box-shadow:0 0 0 rgba(0,0,0,0);
+}
+
+.stat-card:hover{
+transform:translateY(-6px);
+box-shadow:0 8px 18px rgba(0,0,0,0.35);
+}
+
+.stat-number{
+font-size:2rem;
+font-weight:bold;
+color:#00ff9c;
+}
+
+.stat-title{
+font-size:0.9rem;
+font-weight:600;
+letter-spacing:1px;
+color:#bbbbbb;
+}
+
+.stat-desc{
+font-size:0.8rem;
+opacity:0.7;
+margin-top:5px;
+}
+
+.light-mode .stat-card{
+background:#f3f3f3;
+}
+
+.light-mode .stat-title{
+color:#333;
+}
+
+.chart-container{
+background:#1e1e1e;
+padding:30px;
+border-radius:12px;
+margin-top:35px;
+}
+
+.chart-container h4{
+margin-bottom:20px;
+}
+
+.mode-toggle{
+cursor:pointer;
+font-size:18px;
+user-select:none;
+}
+
+</style>
+
+</head>
+
+<body id="page">
+
+<nav class="navbar">
+<div class="navbar-container">
+
+<div class="nav-links">
+<a href="/">🏠 Home</a>
+<a href="/dashboard">📊 Dashboard</a>
+<a href="/add-round">🏌️ Add Round</a>
+<a href="/rounds">📋 Rounds</a>
+<a href="/handicap-details">🧮 Handicap</a>
+</div>
+
+<div class="mode-toggle" onclick="toggleMode()">🌙 / ☀</div>
+
+</div>
+</nav>
+
+<div class="container mt-5">
+
+<h1 class="mb-4">⛳ Golf Handicap Dashboard</h1>
+
+<div class="row g-4">
+
+<div class="col-md-3">
+<div class="stat-card">
+<div class="stat-title">⛳ Handicap Index</div>
+<div class="stat-number">{{ handicap }}</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="stat-card">
+<div class="stat-title">📊 Rounds Played</div>
+<div class="stat-number">{{ rounds_played }}</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="stat-card">
+<div class="stat-title">⭐ Best Score</div>
+<div class="stat-number">{{ best_score }}</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="stat-card">
+<div class="stat-title">📉 Worst Score</div>
+<div class="stat-number">{{ worst_score }}</div>
+</div>
+</div>
+
+</div>
+
+<div class="chart-container">
+
+<h4 class="mb-3">📈 Score & Handicap Analysis</h4>
+
+<canvas id="diffChart"></canvas>
+
+</div>
+
+</div>
+
+<div class="footer">
+
+Golf Handicap Calculator<br>
+Final Year Project – Anglia Ruskin University<br>
+Developed by James Wilson<br>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const differentials = JSON.parse('{{ differentials | tojson | safe }}')
+const progression = JSON.parse('{{ progression | tojson | safe }}')
+
+function calculateTrend(data){
+
+let n=data.length
+let sumX=0,sumY=0,sumXY=0,sumXX=0
+
+for(let i=0;i<n;i++){
+let x=i
+let y=data[i]
+sumX+=x
+sumY+=y
+sumXY+=x*y
+sumXX+=x*x
+}
+
+let slope=(n*sumXY-sumX*sumY)/(n*sumXX-sumX*sumX)
+let intercept=(sumY-slope*sumX)/n
+
+let trend=[]
+
+for(let i=0;i<n;i++){
+trend.push(slope*i+intercept)
+}
+
+return trend
+
+}
+
+const trendline=calculateTrend(differentials)
+
+const ctx=document.getElementById('diffChart')
+
+new Chart(ctx,{
+type:'line',
+data:{
+labels:differentials.map((_,i)=>i+1),
+datasets:[
+{
+label:'Score Differential',
+data:differentials,
+tension:0.3
+},
+{
+label:'Handicap Progression',
+data:progression,
+tension:0.3
+},
+{
+label:'Performance Trend',
+data:trendline,
+borderDash:[5,5],
+tension:0
+}
+]
+}
+})
+
+function toggleMode(){
+
+const page=document.getElementById("page")
+
+page.classList.toggle("light-mode")
+
+if(page.classList.contains("light-mode")){
+localStorage.setItem("mode","light")
+}
+else{
+localStorage.setItem("mode","dark")
+}
+
+}
+
+const page=document.getElementById("page")
+
+if(localStorage.getItem("mode")==="light"){
+page.classList.add("light-mode")
+}
+
+</script>
+
+</body>
+
+</html>

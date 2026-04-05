@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>🏌️ Add Golf Round</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+
+body{
+background-color:#121212;
+color:white;
+transition:0.3s;
+min-height:100vh;
+display:flex;
+flex-direction:column;
+}
+
+.navbar{
+background:#1f1f1f;
+height:60px;
+display:flex;
+align-items:center;
+}
+
+.navbar-container{
+display:flex;
+justify-content:space-between;
+align-items:center;
+width:100%;
+max-width:1100px;
+margin:0 auto;
+}
+
+.nav-links{
+display:flex;
+align-items:center;
+gap:20px;
+}
+
+.nav-links a{
+color:white;
+text-decoration:none;
+font-weight:500;
+}
+
+.card{
+background:#1e1e1e;
+border:none;
+border-radius:12px;
+padding:40px;
+max-width:800px;
+margin:auto;
+}
+
+.card h2{
+color:white;
+}
+
+.card label{
+color:white;
+}
+
+.card input,
+.card select{
+width:100%;
+margin-top:8px;
+margin-bottom:18px;
+}
+
+.light-mode{
+background:white;
+color:black;
+}
+
+.light-mode .navbar{
+background:#e9e9e9;
+}
+
+.light-mode .nav-links a{
+color:black;
+}
+
+.light-mode .card{
+background:#f3f3f3;
+}
+
+.light-mode .card h2,
+.light-mode .card label{
+color:black;
+}
+
+.light-mode input,
+.light-mode select{
+background:white;
+color:black;
+}
+
+.footer{
+text-align:center;
+padding:25px;
+font-size:14px;
+opacity:0.7;
+margin-top:auto;
+}
+
+.mode-toggle{
+cursor:pointer;
+font-size:18px;
+user-select:none;
+}
+
+</style>
+
+</head>
+
+<body id="page">
+
+<nav class="navbar">
+<div class="navbar-container">
+
+<div class="nav-links">
+<a href="/">🏠 Home</a>
+<a href="/dashboard">📊 Dashboard</a>
+<a href="/add-round">🏌️ Add Round</a>
+<a href="/rounds">📋 Rounds</a>
+<a href="/handicap-details">🧮 Handicap</a>
+</div>
+
+<div class="mode-toggle" onclick="toggleMode()">🌙 / ☀</div>
+
+</div>
+</nav>
+
+<div class="container mt-5">
+
+<div class="card">
+
+<h2 class="mb-4">➕ Add Golf Round</h2>
+
+<form method="POST">
+
+<div class="mb-3">
+<label>Date</label>
+<input type="date" name="date" class="form-control" required>
+</div>
+
+<div class="mb-3">
+<label>Course</label>
+
+<select name="course" id="courseSelect" class="form-control" required>
+
+<option value="">Select Course</option>
+
+{% for course in courses %}
+
+<option value="{{ course[0] }}" data-rating="{{ course[1] }}" data-slope="{{ course[2] }}">
+{{ course[0] }}
+</option>
+
+{% endfor %}
+
+</select>
+
+</div>
+
+<div class="mb-3">
+<label>Score</label>
+<input type="number" name="score" class="form-control" required>
+</div>
+
+<div class="mb-3">
+<label>Course Rating</label>
+<input type="number" step="0.1" name="course_rating" id="courseRating" class="form-control" required>
+</div>
+
+<div class="mb-3">
+<label>Slope Rating</label>
+<input type="number" name="slope_rating" id="slopeRating" class="form-control" required>
+</div>
+
+<button class="btn btn-success">Add Round</button>
+
+</form>
+
+</div>
+
+</div>
+
+<div class="footer">
+
+Golf Handicap Calculator<br>
+Final Year Project – Anglia Ruskin University<br>
+Developed by James Wilson<br>
+
+</div>
+
+<script>
+
+const select=document.getElementById("courseSelect")
+
+select.addEventListener("change",function(){
+
+const option=select.options[select.selectedIndex]
+
+document.getElementById("courseRating").value=option.dataset.rating
+document.getElementById("slopeRating").value=option.dataset.slope
+
+})
+
+function toggleMode(){
+
+const page=document.getElementById("page")
+
+page.classList.toggle("light-mode")
+
+if(page.classList.contains("light-mode")){
+localStorage.setItem("mode","light")
+}else{
+localStorage.setItem("mode","dark")
+}
+
+}
+
+const page=document.getElementById("page")
+
+if(localStorage.getItem("mode")==="light"){
+page.classList.add("light-mode")
+}
+
+</script>
+
+</body>
+
+</html>

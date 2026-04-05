@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Golf Handicap App</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+
+body{
+background:#121212;
+color:white;
+min-height:100vh;
+display:flex;
+flex-direction:column;
+transition:0.3s;
+}
+
+.navbar{
+background:#1f1f1f;
+height:60px;
+display:flex;
+align-items:center;
+}
+
+.navbar-container{
+display:flex;
+justify-content:space-between;
+align-items:center;
+width:100%;
+max-width:1100px;
+margin:0 auto;
+}
+
+.nav-links{
+display:flex;
+align-items:center;
+gap:20px;
+}
+
+.nav-links a{
+color:white;
+text-decoration:none;
+font-weight:500;
+}
+
+.nav-links a:hover{
+color:#00ff9c;
+}
+
+.mode-toggle{
+cursor:pointer;
+font-size:18px;
+}
+
+.container{
+max-width:900px;
+flex:1;
+}
+
+.card{
+background:#1e1e1e;
+border-radius:12px;
+padding:20px;
+margin-bottom:20px;
+transition:0.2s;
+}
+
+.card:hover{
+transform:translateY(-5px);
+}
+
+.card a{
+text-decoration:none;
+color:#00ff9c;
+font-weight:500;
+}
+
+.card h4{
+color:white;
+}
+
+.card p{
+color:#cccccc;
+}
+
+.light-mode .card h4{
+color:black;
+}
+
+.light-mode .card p{
+color:#555;
+}
+
+.light-mode{
+background:white;
+color:black;
+}
+
+.light-mode .navbar{
+background:#e9e9e9;
+}
+
+.light-mode .nav-links a{
+color:black;
+}
+
+.light-mode .card{
+background:#f3f3f3;
+}
+
+.light-mode .card a{
+color:#007a4d;
+}
+
+.footer{
+text-align:center;
+padding:25px;
+font-size:14px;
+opacity:0.7;
+margin-top:auto;
+}
+
+</style>
+
+</head>
+
+<body id="page">
+
+<div class="container mt-5">
+
+<h1 class="mb-3">⛳ Welcome to Golf Handicap Calculator</h1>
+
+<p class="mb-4">
+Track your golf performance, calculate your handicap index, and analyse your improvement over time.
+</p>
+
+<div class="card">
+<h4>📊 Dashboard</h4>
+<p>View your handicap, stats, and performance graphs.</p>
+<a href="/dashboard">Go to Dashboard →</a>
+</div>
+
+<div class="card">
+<h4>🏌️ Add Round</h4>
+<p>Enter a new golf round with automatic course stats.</p>
+<a href="/add-round">Add a Round →</a>
+</div>
+
+<div class="card">
+<h4>📋 Round History</h4>
+<p>See all your rounds, delete entries, and export data.</p>
+<a href="/rounds">View Rounds →</a>
+</div>
+
+<div class="card">
+<h4>🧮 Handicap Details</h4>
+<p>Understand how your handicap is calculated.</p>
+<a href="/handicap-details">View Breakdown →</a>
+</div>
+
+</div>
+
+<div class="footer">
+Golf Handicap Calculator<br>
+Final Year Project – Anglia Ruskin University<br>
+Developed by James Wilson<br>
+</div>
+
+<script>
+const page=document.getElementById("page")
+
+if(localStorage.getItem("mode")==="light"){
+page.classList.add("light-mode")
+}
+</script>
+
+</body>
+</html>
