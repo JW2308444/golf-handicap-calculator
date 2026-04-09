@@ -3,7 +3,9 @@
 
 <head>
 
-<title>🧮 Handicap Breakdown</title>
+<title>Golf Calculator</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -32,12 +34,14 @@ align-items:center;
 width:100%;
 max-width:1100px;
 margin:0 auto;
+padding:0 15px;
 }
 
 .nav-links{
 display:flex;
 align-items:center;
 gap:20px;
+flex-wrap:wrap;
 }
 
 .nav-links a{
@@ -55,16 +59,36 @@ color:white;
 background:#1b5e20;
 }
 
-.chart-container{
-background:#1e1e1e;
-padding:25px;
-border-radius:12px;
-margin-top:25px;
+/* INFO BUTTON */
+
+.info-btn{
+background:#00ff9c;
+color:black;
+border:none;
+border-radius:50%;
+width:22px;
+height:22px;
+font-size:14px;
+font-weight:bold;
+cursor:pointer;
+margin-left:8px;
 }
 
-.light-mode .chart-container{
-background:#ffffff;
+/* INFO BOX */
+
+.info-box{
+display:none;
+background:#2a2a2a;
+color:white;
+padding:15px;
+border-radius:10px;
+margin-bottom:15px;
+font-size:14px;
+line-height:1.5;
+max-width:600px;
 }
+
+/* LIGHT MODE */
 
 .light-mode{
 background:white;
@@ -87,6 +111,26 @@ color:black;
 .light-mode .used{
 background:#c8e6c9;
 }
+
+.light-mode .info-btn{
+background:#007a4d;
+color:white;
+}
+
+.light-mode .info-box{
+background:#e9e9e9;
+color:black;
+}
+
+/* MOBILE */
+
+@media (max-width:768px){
+h2{
+font-size:1.5rem;
+}
+}
+
+/* FOOTER */
 
 .footer{
 text-align:center;
@@ -126,19 +170,33 @@ user-select:none;
 
 <div class="container mt-5">
 
-<h2>🧮 Handicap Calculation Breakdown</h2>
+<h2>
+🧮 Handicap Calculation Breakdown
+<button class="info-btn" onclick="toggleInfo('mainInfo')">?</button>
+</h2>
 
-<p>
-Your handicap is calculated using the <strong>best 8 score differentials from your last 20 rounds</strong>.
-Lower values indicate better performance.
-</p>
+<div id="mainInfo" class="info-box">
+Your handicap index is calculated using the <strong>best 8 score differentials from your most recent 20 rounds</strong>.
+<br><br>
+Only the lowest (best) differentials are used, ensuring that your handicap reflects your potential ability rather than average performance.
+<br><br>
+Rows highlighted in green indicate the rounds currently used in the calculation.
+</div>
+
+<div id="diffInfo" class="info-box">
+A score differential measures how your score compares to the difficulty of the course.
+Lower differentials indicate better performance relative to course conditions.
+</div>
 
 <table class="table table-striped">
 
 <tr>
 <th>Date</th>
 <th>Course</th>
-<th>Differential</th>
+<th>
+Differential
+<button class="info-btn" onclick="toggleInfo('diffInfo')">?</button>
+</th>
 <th>Used</th>
 </tr>
 
@@ -164,12 +222,17 @@ Lower values indicate better performance.
 </div>
 
 <div class="footer">
-Golf Handicap Calculator<br>
+Golf Calculator<br>
 Final Year Project – Anglia Ruskin University<br>
 Developed by James Wilson<br>
 </div>
 
 <script>
+
+function toggleInfo(id){
+const box=document.getElementById(id)
+box.style.display = (box.style.display==="block") ? "none" : "block"
+}
 
 document.addEventListener("DOMContentLoaded", function(){
 

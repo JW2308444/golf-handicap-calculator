@@ -4,7 +4,9 @@
 
 <head>
 
-<title>🏌️ Add Golf Round</title>
+<title>Golf Calculator</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -33,12 +35,14 @@ align-items:center;
 width:100%;
 max-width:1100px;
 margin:0 auto;
+padding:0 15px;
 }
 
 .nav-links{
 display:flex;
 align-items:center;
 gap:20px;
+flex-wrap:wrap;
 }
 
 .nav-links a{
@@ -71,6 +75,38 @@ margin-top:8px;
 margin-bottom:18px;
 }
 
+/* INFO BUTTON */
+
+.info-btn{
+background:#00ff9c;
+color:black;
+border:none;
+border-radius:50%;
+width:20px;
+height:20px;
+font-size:13px;
+font-weight:bold;
+cursor:pointer;
+margin-left:6px;
+}
+
+.info-box{
+display:none;
+background:#2a2a2a;
+color:white; 
+padding:10px;
+border-radius:8px;
+margin-top:5px;  
+margin-bottom:10px;
+font-size:13px;
+line-height:1.5;
+}
+
+.light-mode .info-box{
+background:#e9e9e9;
+color:black; 
+}
+
 .light-mode{
 background:white;
 color:black;
@@ -97,6 +133,23 @@ color:black;
 .light-mode select{
 background:white;
 color:black;
+}
+
+.light-mode .info-btn{
+background:#007a4d;
+color:white;
+}
+
+.light-mode .info-box{
+background:#e9e9e9;
+}
+
+/* MOBILE */
+
+@media (max-width:768px){
+.card{
+padding:20px;
+}
 }
 
 .footer{
@@ -144,41 +197,67 @@ user-select:none;
 <form method="POST">
 
 <div class="mb-3">
-<label>Date</label>
+<label>
+Date
+<button type="button" class="info-btn" onclick="toggleInfo('dateInfo')">?</button>
+</label>
+<div id="dateInfo" class="info-box">
+Select the date the round was played. This is used to track progression over time.
+</div>
 <input type="date" name="date" class="form-control" required>
 </div>
 
 <div class="mb-3">
-<label>Course</label>
+<label>
+Course
+<button type="button" class="info-btn" onclick="toggleInfo('courseInfo')">?</button>
+</label>
+<div id="courseInfo" class="info-box">
+Choosing a course will automatically fill in rating and slope values for accuracy.
+</div>
 
 <select name="course" id="courseSelect" class="form-control" required>
-
 <option value="">Select Course</option>
 
 {% for course in courses %}
-
 <option value="{{ course[0] }}" data-rating="{{ course[1] }}" data-slope="{{ course[2] }}">
 {{ course[0] }}
 </option>
-
 {% endfor %}
 
 </select>
-
 </div>
 
 <div class="mb-3">
-<label>Score</label>
+<label>
+Score
+<button type="button" class="info-btn" onclick="toggleInfo('scoreInfo')">?</button>
+</label>
+<div id="scoreInfo" class="info-box">
+Your total strokes for the round. Lower scores indicate better performance.
+</div>
 <input type="number" name="score" class="form-control" required>
 </div>
 
 <div class="mb-3">
-<label>Course Rating</label>
+<label>
+Course Rating
+<button type="button" class="info-btn" onclick="toggleInfo('ratingInfo')">?</button>
+</label>
+<div id="ratingInfo" class="info-box">
+Represents the expected score for a scratch golfer on this course.
+</div>
 <input type="number" step="0.1" name="course_rating" id="courseRating" class="form-control" required>
 </div>
 
 <div class="mb-3">
-<label>Slope Rating</label>
+<label>
+Slope Rating
+<button type="button" class="info-btn" onclick="toggleInfo('slopeInfo')">?</button>
+</label>
+<div id="slopeInfo" class="info-box">
+Indicates course difficulty for average golfers. Higher values = harder course.
+</div>
 <input type="number" name="slope_rating" id="slopeRating" class="form-control" required>
 </div>
 
@@ -191,30 +270,28 @@ user-select:none;
 </div>
 
 <div class="footer">
-
-Golf Handicap Calculator<br>
+Golf Calculator<br>
 Final Year Project – Anglia Ruskin University<br>
 Developed by James Wilson<br>
-
 </div>
 
 <script>
 
+function toggleInfo(id){
+const box=document.getElementById(id)
+box.style.display = (box.style.display==="block") ? "none" : "block"
+}
+
 const select=document.getElementById("courseSelect")
 
 select.addEventListener("change",function(){
-
 const option=select.options[select.selectedIndex]
-
 document.getElementById("courseRating").value=option.dataset.rating
 document.getElementById("slopeRating").value=option.dataset.slope
-
 })
 
 function toggleMode(){
-
 const page=document.getElementById("page")
-
 page.classList.toggle("light-mode")
 
 if(page.classList.contains("light-mode")){
@@ -222,7 +299,6 @@ localStorage.setItem("mode","light")
 }else{
 localStorage.setItem("mode","dark")
 }
-
 }
 
 const page=document.getElementById("page")

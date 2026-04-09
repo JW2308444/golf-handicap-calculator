@@ -4,7 +4,9 @@
 
 <head>
 
-<title>📊 Performance Dashboard</title>
+<title>Golf Calculator</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -33,12 +35,14 @@ align-items:center;
 width:100%;
 max-width:1100px;
 margin:0 auto;
+padding:0 15px;
 }
 
 .nav-links{
 display:flex;
 align-items:center;
 gap:20px;
+flex-wrap:wrap;
 }
 
 .nav-links a{
@@ -80,18 +84,18 @@ color:black;
 background:#f3f3f3;
 }
 
+/* STATS */
+
 .stat-card{
 background:#1e1e1e;
 border-radius:12px;
 padding:20px;
 text-align:center;
 transition:all 0.25s ease;
-box-shadow:0 0 0 rgba(0,0,0,0);
 }
 
 .stat-card:hover{
 transform:translateY(-6px);
-box-shadow:0 8px 18px rgba(0,0,0,0.35);
 }
 
 .stat-number{
@@ -107,12 +111,6 @@ letter-spacing:1px;
 color:#bbbbbb;
 }
 
-.stat-desc{
-font-size:0.8rem;
-opacity:0.7;
-margin-top:5px;
-}
-
 .light-mode .stat-card{
 background:#f3f3f3;
 }
@@ -121,15 +119,69 @@ background:#f3f3f3;
 color:#333;
 }
 
+/* CHART */
+
 .chart-container{
 background:#1e1e1e;
 padding:30px;
 border-radius:12px;
 margin-top:35px;
+position:relative;
 }
 
 .chart-container h4{
 margin-bottom:20px;
+}
+
+/* INFO BUTTON */
+
+.info-btn{
+background:#00ff9c;
+color:black;
+border:none;
+border-radius:50%;
+width:22px;
+height:22px;
+font-size:14px;
+font-weight:bold;
+cursor:pointer;
+margin-left:8px;
+}
+
+.light-mode .info-btn{
+background:#007a4d;
+color:white;
+}
+
+/* INFO BOX */
+
+.info-box{
+display:none;
+background:#2a2a2a;
+padding:15px;
+border-radius:10px;
+margin-bottom:15px;
+font-size:14px;
+line-height:1.5;
+}
+
+.light-mode .info-box{
+background:#e9e9e9;
+color:black;
+}
+
+/* MOBILE */
+
+@media (max-width:768px){
+
+h1{
+font-size:1.6rem;
+}
+
+.stat-number{
+font-size:1.5rem;
+}
+
 }
 
 .mode-toggle{
@@ -162,7 +214,7 @@ user-select:none;
 
 <div class="container mt-5">
 
-<h1 class="mb-4">⛳ Golf Handicap Dashboard</h1>
+<h1 class="mb-4">⛳ Golf Calculator Dashboard</h1>
 
 <div class="row g-4">
 
@@ -198,7 +250,20 @@ user-select:none;
 
 <div class="chart-container">
 
-<h4 class="mb-3">📈 Score & Handicap Analysis</h4>
+<h4>
+📈 Score & Handicap Analysis
+<button class="info-btn" onclick="toggleInfo()">?</button>
+</h4>
+
+<div id="infoBox" class="info-box">
+This chart displays three key performance metrics:
+<br><br>
+<strong>Score Differential:</strong> Represents how your score compares to the course difficulty. Lower values indicate better performance.
+<br><br>
+<strong>Handicap Progression:</strong> Shows how your handicap index evolves over time based on your best recent rounds.
+<br><br>
+<strong>Performance Trend:</strong> A calculated trendline indicating whether your overall performance is improving or declining.
+</div>
 
 <canvas id="diffChart"></canvas>
 
@@ -207,16 +272,19 @@ user-select:none;
 </div>
 
 <div class="footer">
-
-Golf Handicap Calculator<br>
+Golf Calculator<br>
 Final Year Project – Anglia Ruskin University<br>
 Developed by James Wilson<br>
-
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
+
+function toggleInfo(){
+const box=document.getElementById("infoBox")
+box.style.display = (box.style.display==="block") ? "none" : "block"
+}
 
 const differentials = JSON.parse('{{ differentials | tojson | safe }}')
 const progression = JSON.parse('{{ progression | tojson | safe }}')

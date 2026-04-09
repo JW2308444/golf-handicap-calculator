@@ -3,7 +3,9 @@
 
 <head>
 
-<title>📋 Round History</title>
+<title>Golf Calculator</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -32,12 +34,14 @@ align-items:center;
 width:100%;
 max-width:1100px;
 margin:0 auto;
+padding:0 15px;
 }
 
 .nav-links{
 display:flex;
 align-items:center;
 gap:20px;
+flex-wrap:wrap;
 }
 
 .nav-links a{
@@ -51,16 +55,36 @@ background:#1e1e1e;
 color:white;
 }
 
-.chart-container{
-background:#1e1e1e;
-padding:25px;
-border-radius:12px;
-margin-top:25px;
+/* INFO BUTTON */
+
+.info-btn{
+background:#00ff9c;
+color:black;
+border:none;
+border-radius:50%;
+width:22px;
+height:22px;
+font-size:14px;
+font-weight:bold;
+cursor:pointer;
+margin-left:8px;
 }
 
-.light-mode .chart-container{
-background:#ffffff;
+/* INFO BOX */
+
+.info-box{
+display:none;
+background:#2a2a2a;
+color:white;
+padding:15px;
+border-radius:10px;
+margin-bottom:15px;
+font-size:14px;
+line-height:1.5;
+max-width:600px;
 }
+
+/* LIGHT MODE */
 
 .light-mode{
 background:white;
@@ -79,6 +103,26 @@ color:black;
 background:white;
 color:black;
 }
+
+.light-mode .info-btn{
+background:#007a4d;
+color:white;
+}
+
+.light-mode .info-box{
+background:#e9e9e9;
+color:black;
+}
+
+/* MOBILE */
+
+@media (max-width:768px){
+h2{
+font-size:1.5rem;
+}
+}
+
+/* FOOTER */
 
 .footer{
 text-align:center;
@@ -118,9 +162,29 @@ user-select:none;
 
 <div class="container mt-5">
 
-<h2>Recorded Golf Rounds</h2>
+<h2>
+📋 Recorded Golf Rounds
+<button class="info-btn" onclick="toggleInfo('mainInfo')">?</button>
+</h2>
 
-<a href="/export" class="btn btn-success mb-3">⬇ Export CSV</a>
+<div id="mainInfo" class="info-box">
+This table shows all recorded rounds. You can review past performance, remove entries, or export your data for analysis.
+</div>
+
+<a href="/export" class="btn btn-success mb-3">
+⬇ Export CSV
+</a>
+<button class="info-btn" onclick="toggleInfo('exportInfo')">?</button>
+
+<div id="exportInfo" class="info-box">
+Exports all your recorded rounds into a CSV file, which can be opened in Excel or other spreadsheet tools.
+</div>
+
+<!-- DIFFERENTIAL INFO BOX -->
+<div id="diffInfo" class="info-box">
+A score differential measures how your score compares to the difficulty of the course.
+Lower differentials indicate better performance.
+</div>
 
 <table class="table table-striped">
 
@@ -131,7 +195,10 @@ user-select:none;
 <th>Score</th>
 <th>Course Rating</th>
 <th>Slope Rating</th>
-<th>Differential</th>
+<th>
+Differential
+<button class="info-btn" onclick="toggleInfo('diffInfo')">?</button>
+</th>
 <th>Delete</th>
 </tr>
 </thead>
@@ -157,12 +224,17 @@ user-select:none;
 </div>
 
 <div class="footer">
-Golf Handicap Calculator<br>
+Golf Calculator<br>
 Final Year Project – Anglia Ruskin University<br>
 Developed by James Wilson<br>
 </div>
 
 <script>
+
+function toggleInfo(id){
+const box=document.getElementById(id)
+box.style.display = (box.style.display==="block") ? "none" : "block"
+}
 
 document.addEventListener("DOMContentLoaded", function(){
 
