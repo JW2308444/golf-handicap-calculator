@@ -170,8 +170,6 @@ background:#e9e9e9;
 color:black;
 }
 
-/* NAVBAR FIX */
-
 .custom-navbar{
 display:flex;
 flex-direction:row;
@@ -194,6 +192,26 @@ padding:10px 0;
 .light-mode .navbar,
 .light-mode .navbar-collapse{
 background:#e9e9e9;
+}
+
+.navbar a{
+color:white !important;
+}
+
+.light-mode .navbar a{
+color:black !important;
+}
+
+/* FIX NAVBAR OVERLAY */
+
+.navbar{
+position: relative;
+z-index: 1000;
+}
+
+.navbar-collapse{
+position: relative;
+z-index: 1000;
 }
 
 /* MOBILE */
