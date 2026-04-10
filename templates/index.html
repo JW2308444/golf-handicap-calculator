@@ -265,7 +265,9 @@ This chart displays three key performance metrics:
 <strong>Performance Trend:</strong> A calculated trendline indicating whether your overall performance is improving or declining.
 </div>
 
-<canvas id="diffChart"></canvas>
+<div style="position:relative; width:100%; height:300px;">
+    <canvas id="diffChart"></canvas>
+</div>
 
 </div>
 
@@ -342,6 +344,10 @@ borderDash:[5,5],
 tension:0
 }
 ]
+},
+options:{
+responsive:true,
+maintainAspectRatio:false
 }
 })
 
