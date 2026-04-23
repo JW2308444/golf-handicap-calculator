@@ -3,10 +3,11 @@ import sqlite3
 
 def create_database():
 
+    # Connect to the SQLite database file
     conn = sqlite3.connect("golf.db")
     cursor = conn.cursor()
 
-    # Rounds table
+    # Create the rounds table if it does not already exist
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS rounds (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -19,7 +20,7 @@ def create_database():
     )
     """)
 
-    # Courses table
+    # Create the courses table if it does not already exist
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS courses (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -31,10 +32,11 @@ def create_database():
 
     conn.commit()
 
-    # Insert sample courses if table empty
+    # Check whether the courses table already contains data
     cursor.execute("SELECT COUNT(*) FROM courses")
     count = cursor.fetchone()[0]
 
+    # Insert default golf courses only if the table is empty
     if count == 0:
 
         courses = [
@@ -56,6 +58,7 @@ def create_database():
 
 def get_courses():
 
+    # Open the database and load all saved course details
     conn = sqlite3.connect("golf.db")
     cursor = conn.cursor()
 
@@ -70,6 +73,7 @@ def get_courses():
 
 def add_round(date, course, score, course_rating, slope_rating, differential):
 
+    # Insert a new golf round into the rounds table
     conn = sqlite3.connect("golf.db")
     cursor = conn.cursor()
 
@@ -84,6 +88,7 @@ def add_round(date, course, score, course_rating, slope_rating, differential):
 
 def get_rounds():
 
+    # Retrieve all rounds ordered by most recent date first
     conn = sqlite3.connect("golf.db")
     cursor = conn.cursor()
 
@@ -98,6 +103,7 @@ def get_rounds():
 
 def delete_round(round_id):
 
+    # Remove one round using its unique database ID
     conn = sqlite3.connect("golf.db")
     cursor = conn.cursor()
 
@@ -109,6 +115,7 @@ def delete_round(round_id):
 
 def get_differentials():
 
+    # Load all differentials in date order for analysis
     conn = sqlite3.connect("golf.db")
     cursor = conn.cursor()
 
@@ -123,6 +130,7 @@ def get_differentials():
 
 def get_statistics():
 
+    # Calculate total rounds, average score, best score, and worst score
     conn = sqlite3.connect("golf.db")
     cursor = conn.cursor()
 

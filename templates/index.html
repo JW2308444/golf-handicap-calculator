@@ -367,14 +367,17 @@ Developed by James Wilson<br>
 
 <script>
 
+/* Show or hide the chart information box */
 function toggleInfo(){
 const box=document.getElementById("infoBox")
 box.style.display = (box.style.display==="block") ? "none" : "block"
 }
 
+/* Load the differential and handicap progression data from Flask */
 const differentials = JSON.parse('{{ differentials | tojson | safe }}')
 const progression = JSON.parse('{{ progression | tojson | safe }}')
 
+/* Calculate a simple trendline from the score differential values */
 function calculateTrend(data){
 
 let n=data.length
@@ -402,10 +405,13 @@ return trend
 
 }
 
+/* Create the trendline data from the differentials list */
 const trendline=calculateTrend(differentials)
 
+/* Get the chart canvas element */
 const ctx=document.getElementById('diffChart')
 
+/* Draw the line chart for differentials, handicap progression, and trend */
 new Chart(ctx,{
 type:'line',
 data:{
@@ -449,6 +455,7 @@ scales:{
 }
 })
 
+/* Toggle theme mode and save the selected preference */
 function toggleMode(){
 
 const page=document.getElementById("page")
@@ -464,8 +471,10 @@ localStorage.setItem("mode","dark")
 
 }
 
+/* Get the page element for saved mode checking */
 const page=document.getElementById("page")
 
+/* Apply light mode if it was saved previously */
 if(localStorage.getItem("mode")==="light"){
 page.classList.add("light-mode")
 }

@@ -195,8 +195,11 @@ Developed by James Wilson<br>
 </div>
 
 <script>
+
+/* Get the page element for saved mode checking */
 const page=document.getElementById("page")
 
+/* Apply light mode if it was saved previously */
 if(localStorage.getItem("mode")==="light"){
 page.classList.add("light-mode")
 }

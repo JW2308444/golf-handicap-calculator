@@ -308,11 +308,13 @@ Developed by James Wilson<br>
 
 <script>
 
+/* Show or hide the selected information box */
 function toggleInfo(id){
 const box=document.getElementById(id)
 box.style.display = (box.style.display==="block") ? "none" : "block"
 }
 
+/* Load the saved theme and apply the matching table style when the page opens */
 document.addEventListener("DOMContentLoaded", function(){
 
 const page = document.getElementById("page")
@@ -336,6 +338,7 @@ table.classList.remove("table-light")
 
 })
 
+/* Switch theme mode, save the choice, and update the table appearance */
 function toggleMode(){
 
 const page = document.getElementById("page")

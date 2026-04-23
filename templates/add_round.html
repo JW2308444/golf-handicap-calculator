@@ -359,19 +359,23 @@ Developed by James Wilson<br>
 
 <script>
 
+/* Show or hide the matching help box */
 function toggleInfo(id){
 const box=document.getElementById(id)
 box.style.display = (box.style.display==="block") ? "none" : "block"
 }
 
+/* Get the course dropdown element */
 const select=document.getElementById("courseSelect")
 
+/* Fill in rating and slope when a course is chosen */
 select.addEventListener("change",function(){
 const option=select.options[select.selectedIndex]
 document.getElementById("courseRating").value=option.dataset.rating
 document.getElementById("slopeRating").value=option.dataset.slope
 })
 
+/* Toggle theme mode and save the selected preference */
 function toggleMode(){
 const page=document.getElementById("page")
 page.classList.toggle("light-mode")
@@ -383,8 +387,10 @@ localStorage.setItem("mode","dark")
 }
 }
 
+/* Get the page element for saved mode checking */
 const page=document.getElementById("page")
 
+/* Apply light mode if it was saved previously */
 if(localStorage.getItem("mode")==="light"){
 page.classList.add("light-mode")
 }
